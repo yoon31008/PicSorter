@@ -2,12 +2,17 @@ package com.example.picsorter;
 
 import android.content.Context;
 import android.media.Image;
+import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.GridLayout;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 public class ImageAdapter extends BaseAdapter {
     private Context mContext;
@@ -31,20 +36,25 @@ public class ImageAdapter extends BaseAdapter {
 
     // create a new ImageView for each item referenced by the Adapter
     public View getView(int position, View convertView, ViewGroup parent) {
-        ImageView imageView;
+        View view;
 
         if (convertView == null) {
-            imageView = new ImageView(mContext);
-            imageView.setLayoutParams(new GridView.LayoutParams(350, 350));
-            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            imageView.setPadding(8, 8, 8, 8);
+            LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            view = inflater.inflate(R.layout.image_with_date, null);
+        } else {
+            view = convertView;
         }
-        else
-        {
-            imageView = (ImageView) convertView;
-        }
-        imageView.setImageResource(mThumbIds[position]);
-        return imageView;
+
+        ImageView imgView = (ImageView) view.findViewById(R.id.picTaken);
+        imgView.setLayoutParams(new GridView.LayoutParams(350, 350));
+        imgView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        imgView.setPadding(8, 8, 8, 8);
+        TextView expireDateView = (TextView) view.findViewById(R.id.expireDate);
+
+        imgView.setImageResource(mThumbIds[position]);
+        expireDateView.setText(position);
+
+        return view;
     }
 
     // Keep all Images in array
